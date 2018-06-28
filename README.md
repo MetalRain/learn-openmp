@@ -2,52 +2,38 @@
 
 Learning parallel processing with OpenMP using Intel video series as base.
 
+## Materials
+
+Playlist:
 https://www.youtube.com/playlist?list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG
 
+Exercise files:
 https://github.com/lat/esc/tree/master/exercises/openmp
 
 ## Building
 
+Choose which parts to compile
 ```
-$ make
-gcc -c -o main.o main.c -march=native -fopenmp -O3
-gcc -o openmp main.o  -march=native -fopenmp -O3
+$ make pi
+$ make mandel
+$ make prod-cons
 ```
 
 ## Running
+
+Control number of threads with environnment variables
 ```
-$ time ./openmp 1
-PI: 3.14159 took 1.02759us using 1 threads
+$ export OMP_NUM_THREADS=4
+```
 
-real  0m0.116s
-user  0m0.111s
-sys 0m0.004s
+Run compiled code
+```
+$ ./pi
+PI: 3.14159 took 0.032234 seconds
 
-$ time ./openmp 2
-PI: 3.14159 took 1.02958us using 2 threads
+$ ./mandel
+Area of Mandlebrot set =   1.51214625 +/-   0.00151215
 
-real  0m0.060s
-user  0m0.111s
-sys 0m0.008s
-
-$ time ./openmp 3
-PI: 3.14159 took 1.03255us using 3 threads
-
-real  0m0.041s
-user  0m0.104s
-sys 0m0.016s
-
-$ time ./openmp 4
-PI: 3.14159 took 1.03405us using 4 threads
-
-real  0m0.034s
-user  0m0.103s
-sys 0m0.016s
-
-$ time ./openmp 5
-PI: 3.14159 took 1.03544us using 5 threads
-
-real  0m0.037s
-user  0m0.109s
-sys 0m0.008s
+$ ./prod_cons
+ In 0.000372 seconds, The sum is 5030.674031
 ```
