@@ -7,3 +7,6 @@ DEPS=
 
 openmp: main.o
 	$(CC) -o openmp main.o  $(CFLAGS)
+
+mandel: mandel.o
+	$(CC) -o mandel mandel.o  $(CFLAGS)
