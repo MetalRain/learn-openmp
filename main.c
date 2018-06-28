@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
   omp_set_num_threads(requested_threads);
   omp_get_wtime();
-  #pragma omp parallel for reduction (+:pi)
+  #pragma omp parallel for reduction (+:pi) schedule(guided, 256)
   for(int i=0; i < num_steps; i++){
     double x = (i + 0.5) * step_size;
     pi += 4.0 / (1.0 + x*x);
