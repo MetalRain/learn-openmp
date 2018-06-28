@@ -9,7 +9,7 @@
 #define FS 38
 #endif
 
-#define DEPTH 4
+#define DEPTH 10
 
 struct node {
    int data;
@@ -18,21 +18,21 @@ struct node {
 };
 
 int fib(int n) {
-  int i, sum = 0;
+  int x, y;
   if (n < 2) {
     return (n);
   }
   // Cut off parallelism after some point to avoid too many threads
   if (n > FS - DEPTH){
-    #pragma omp parallel for num_threads(2) reduction(+:sum)
-    for(i = 1; i < 3; i++){
-      sum += fib(n - i);
-    }
-    return sum;
+    #pragma omp task shared(x)
+    x = fib(n - 1);
+    #pragma omp task shared(y)
+    y = fib(n - 2);
+    #pragma omp taskwait
+    return x + y;
   } else {
-    sum = fib(n - 1) + fib(n - 2);
+    return fib(n - 1) + fib(n - 2);
   }
-  return sum;
 }
 
 void processwork(struct node* p) 
