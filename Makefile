@@ -5,8 +5,11 @@ DEPS=
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-openmp: main.o
-	$(CC) -o openmp main.o  $(CFLAGS)
+pi: pi.o
+	$(CC) -o pi pi.o  $(CFLAGS)
 
 mandel: mandel.o
 	$(CC) -o mandel mandel.o  $(CFLAGS)
+
+linked: linked.o
+	$(CC) -o linked linked.o  $(CFLAGS)
