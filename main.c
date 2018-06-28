@@ -35,9 +35,10 @@ int main(int argc, char **argv) {
       x = (i + 0.5) * step_size;
       sum += 4.0 / (1.0 + x*x);
     }
+    sum *= step_size;
 
-    #pragma omp critical
-    pi += sum * step_size;
+    #pragma omp atomic
+    pi += sum;
   }
   elapsed = omp_get_wtime();
 
