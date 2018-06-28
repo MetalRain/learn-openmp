@@ -22,7 +22,7 @@ int randy = SEED;
 /* function to fill an array with random numbers */
 void fill_rand(int length, double *a)
 {
-   int i; 
+   int i;
    for (i=0;i<length;i++) {
      randy = (RAND_MULT * randy + RAND_ADD) % RAND_MOD;
      *(a+i) = ((double) randy)/((double) RAND_MOD);
@@ -33,6 +33,7 @@ void fill_rand(int length, double *a)
 double Sum_array(int length, double *a)
 {
    int i;  double sum = 0.0;
+   #pragma omp parallel for default(none) firstprivate(a, length) reduction(+:sum)
    for (i=0;i<length;i++)  sum += *(a+i);  
    return sum; 
 }
@@ -40,15 +41,33 @@ double Sum_array(int length, double *a)
 int main()
 {
   double *A, sum, runtime;
-  int flag = 0;
+  int flag = 0, flg_tmp; // is there anything to consume
 
   A = (double *)malloc(N*sizeof(double));
 
   runtime = omp_get_wtime();
-
-  fill_rand(N, A);        // Producer: fill an array of data
-
-  sum = Sum_array(N, A);  // Consumer: sum the array
+  #pragma omp parallel
+  {
+    #pragma omp single nowait
+    {
+      fill_rand(N, A);        // Producer: fill an array of data
+      #pragma omp flush
+      #pragma omp atomic write
+      flag = 1;
+      #pragma omp flush(flag)
+    }
+    #pragma omp single
+    {
+      while(1){
+        #pragma omp flush(flag)
+        #pragma omp atomic read
+        flg_tmp = flag;
+        if (flg_tmp == 1) break;
+      }
+      #pragma omp flush
+      sum = Sum_array(N, A);  // Consumer: sum the array
+    }
+  }
    
   runtime = omp_get_wtime() - runtime;
 
