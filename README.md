@@ -4,6 +4,8 @@ Learning parallel processing with OpenMP using Intel video series as base.
 
 https://www.youtube.com/playlist?list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG
 
+https://github.com/lat/esc/tree/master/exercises/openmp
+
 ## Building
 
 ```

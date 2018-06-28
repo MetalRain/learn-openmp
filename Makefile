@@ -13,3 +13,6 @@ mandel: mandel.o
 
 linked: linked.o
 	$(CC) -o linked linked.o  $(CFLAGS)
+
+prod-cons: prod_cons.o
+	$(CC) -o prod_cons prod_cons.o  $(CFLAGS)
