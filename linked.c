@@ -24,7 +24,7 @@ int fib(int n) {
   } else {
     // Cut off parallelism after some point to avoid too many threads
     if (n > FS - DEPTH){
-      #pragma omp parallel for reduction(+:sum)
+      #pragma omp parallel for num_threads(2) reduction(+:sum)
       for(i = 1; i < 3; i++){
         sum += fib(n - i);
       }
