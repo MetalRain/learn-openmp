@@ -1,14 +1,21 @@
 #include <stdio.h>
 #include <omp.h>
+#include <stdlib.h>
 
-#define PAD 8 // 64 byte L1 cache line
-
-int main() {
+int main(int argc, char **argv) {
   int requested_threads = 4;
+
+  if (argc > 1) {
+    requested_threads = atoi(argv[1]);
+    if (requested_threads > 16 || requested_threads < 1) {
+      printf("Use 1-16 threads, not %d\n", requested_threads);
+      return 1;
+    }
+  }
+
   int used_threads;
   long num_steps = 100000000;
   double step_size = 1.0/(double)num_steps;
-  double sums[requested_threads][PAD];
   double pi = 0.0;
   double elapsed = 0.0;
 
@@ -28,13 +35,11 @@ int main() {
       x = (i + 0.5) * step_size;
       sum += 4.0 / (1.0 + x*x);
     }
-    sums[id][0] = sum;
+
+    #pragma omp critical
+    pi += sum * step_size;
   }
   elapsed = omp_get_wtime();
-
-  for (int i=0; i < used_threads; i++) {
-    pi += sums[i][0] * step_size;
-  }
 
   printf("PI: %g took %gus using %d threads\n", pi, elapsed / 1000., used_threads);
 }
