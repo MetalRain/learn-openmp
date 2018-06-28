@@ -17,6 +17,7 @@ Choose which parts to compile
 $ make pi
 $ make mandel
 $ make prod-cons
+$ make random
 ```
 
 ## Running
@@ -35,5 +36,8 @@ $ ./mandel
 Area of Mandlebrot set =   1.51214625 +/-   0.00151215
 
 $ ./prod_cons
+ In 0.000372 seconds, The sum is 5030.674031
+
+$ ./random
  In 0.000372 seconds, The sum is 5030.674031
 ```

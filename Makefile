@@ -16,3 +16,6 @@ linked: linked.o
 
 prod-cons: prod_cons.o
 	$(CC) -o prod_cons prod_cons.o  $(CFLAGS)
+
+random: pi_mc.o random.o
+	$(CC) -o random pi_mc.o random.o  $(CFLAGS)
